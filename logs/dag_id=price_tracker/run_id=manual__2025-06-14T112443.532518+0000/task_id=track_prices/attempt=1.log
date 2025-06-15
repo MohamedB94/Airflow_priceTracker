@@ -1,0 +1,36 @@
+[2025-06-14T11:24:46.348+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: price_tracker.track_prices manual__2025-06-14T11:24:43.532518+00:00 [queued]>
+[2025-06-14T11:24:46.360+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: price_tracker.track_prices manual__2025-06-14T11:24:43.532518+00:00 [queued]>
+[2025-06-14T11:24:46.361+0000] {taskinstance.py:1359} INFO - Starting attempt 1 of 3
+[2025-06-14T11:24:46.377+0000] {taskinstance.py:1380} INFO - Executing <Task(PythonOperator): track_prices> on 2025-06-14 11:24:43.532518+00:00
+[2025-06-14T11:24:46.391+0000] {standard_task_runner.py:57} INFO - Started process 231 to run task
+[2025-06-14T11:24:46.406+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'price_tracker', 'track_prices', 'manual__2025-06-14T11:24:43.532518+00:00', '--job-id', '7', '--raw', '--subdir', 'DAGS_FOLDER/price_tracker_dag.py', '--cfg-path', '/tmp/tmpn4oy5hbo']
+[2025-06-14T11:24:46.419+0000] {standard_task_runner.py:85} INFO - Job 7: Subtask track_prices
+[2025-06-14T11:24:46.548+0000] {task_command.py:415} INFO - Running <TaskInstance: price_tracker.track_prices manual__2025-06-14T11:24:43.532518+00:00 [running]> on host cb09a441b2ae
+[2025-06-14T11:24:46.671+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='price_tracker' AIRFLOW_CTX_TASK_ID='track_prices' AIRFLOW_CTX_EXECUTION_DATE='2025-06-14T11:24:43.532518+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-06-14T11:24:43.532518+00:00'
+[2025-06-14T11:24:46.675+0000] {price_tracker_dag.py:54} INFO - Démarrage du processus de suivi des prix
+[2025-06-14T11:24:46.677+0000] {processor.py:135} INFO - Démarrage du suivi des prix pour 3 produits
+[2025-06-14T11:24:46.678+0000] {processor.py:107} INFO - Traitement du produit: iPhone 13 (ID: product1)
+[2025-06-14T11:24:46.678+0000] {scraper.py:52} INFO - Utilisation de la réponse en cache pour https://www.amazon.fr/Apple-iPhone-13-128-Go/dp/B09G9HD6PD/
+[2025-06-14T11:24:46.693+0000] {save_price.py:60} WARNING - Enregistrement ignoré en raison d'un prix invalide ou d'un statut d'erreur: {'price': None, 'title': 'Unknown Product', 'currency': 'Unknown', 'status': 'error', 'numeric_price': None, 'availability': None, 'image_url': None, 'url': 'https://www.amazon.fr/Apple-iPhone-13-128-Go/dp/B09G9HD6PD/', 'source': 'cache'}
+[2025-06-14T11:24:46.693+0000] {processor.py:107} INFO - Traitement du produit: Samsung Galaxy S22 (ID: product2)
+[2025-06-14T11:24:46.694+0000] {scraper.py:52} INFO - Utilisation de la réponse en cache pour https://www.amazon.fr/Samsung-Galaxy-S22-Smartphone-Graphite/dp/B09Q8LNQBT/
+[2025-06-14T11:24:46.703+0000] {save_price.py:60} WARNING - Enregistrement ignoré en raison d'un prix invalide ou d'un statut d'erreur: {'price': None, 'title': 'Unknown Product', 'currency': 'Unknown', 'status': 'error', 'numeric_price': None, 'availability': None, 'image_url': None, 'url': 'https://www.amazon.fr/Samsung-Galaxy-S22-Smartphone-Graphite/dp/B09Q8LNQBT/', 'source': 'cache'}
+[2025-06-14T11:24:46.703+0000] {processor.py:107} INFO - Traitement du produit: Sony WH-1000XM4 (ID: product3)
+[2025-06-14T11:24:46.703+0000] {scraper.py:96} INFO - Récupération du prix depuis: https://www.amazon.fr/Sony-WH-1000XM4-Bluetooth-cancelling-Compatible/dp/B08C7KG5LP/
+[2025-06-14T11:24:46.824+0000] {scraper.py:127} WARNING - Élément de prix non trouvé avec le sélecteur: .a-price .a-offscreen
+[2025-06-14T11:24:46.824+0000] {scraper.py:130} INFO - Titre du produit trouvé: Unknown Product, mais pas de prix avec le sélecteur fourni.
+[2025-06-14T11:24:46.825+0000] {scraper.py:93} INFO - Tentative 2/3 - Attente de 3.98 secondes
+[2025-06-14T11:24:50.814+0000] {scraper.py:96} INFO - Récupération du prix depuis: https://www.amazon.fr/Sony-WH-1000XM4-Bluetooth-cancelling-Compatible/dp/B08C7KG5LP/
+[2025-06-14T11:24:50.929+0000] {scraper.py:127} WARNING - Élément de prix non trouvé avec le sélecteur: .a-price .a-offscreen
+[2025-06-14T11:24:50.930+0000] {scraper.py:130} INFO - Titre du produit trouvé: Unknown Product, mais pas de prix avec le sélecteur fourni.
+[2025-06-14T11:24:50.930+0000] {scraper.py:93} INFO - Tentative 3/3 - Attente de 4.29 secondes
+[2025-06-14T11:24:55.227+0000] {scraper.py:96} INFO - Récupération du prix depuis: https://www.amazon.fr/Sony-WH-1000XM4-Bluetooth-cancelling-Compatible/dp/B08C7KG5LP/
+[2025-06-14T11:24:55.336+0000] {scraper.py:127} WARNING - Élément de prix non trouvé avec le sélecteur: .a-price .a-offscreen
+[2025-06-14T11:24:55.337+0000] {scraper.py:130} INFO - Titre du produit trouvé: Unknown Product, mais pas de prix avec le sélecteur fourni.
+[2025-06-14T11:24:55.339+0000] {save_price.py:60} WARNING - Enregistrement ignoré en raison d'un prix invalide ou d'un statut d'erreur: {'price': None, 'title': 'Produit Inconnu', 'currency': 'Inconnu', 'status': 'error', 'message': 'Échec de récupération du prix après plusieurs tentatives', 'url': 'https://www.amazon.fr/Sony-WH-1000XM4-Bluetooth-cancelling-Compatible/dp/B08C7KG5LP/', 'source': 'error'}
+[2025-06-14T11:24:55.340+0000] {processor.py:147} INFO - Suivi des prix terminé pour 3 produits
+[2025-06-14T11:24:55.340+0000] {price_tracker_dag.py:58} INFO - Suivi des prix réussi pour 0/3 produits
+[2025-06-14T11:24:55.356+0000] {python.py:194} INFO - Done. Returned value was: [{'id': 'product1', 'name': 'iPhone 13', 'price': None, 'timestamp': '2025-06-14 11:24:46'}, {'id': 'product2', 'name': 'Samsung Galaxy S22', 'price': None, 'timestamp': '2025-06-14 11:24:46'}, {'id': 'product3', 'name': 'Sony WH-1000XM4', 'price': None, 'timestamp': '2025-06-14 11:24:55'}]
+[2025-06-14T11:24:55.377+0000] {taskinstance.py:1398} INFO - Marking task as SUCCESS. dag_id=price_tracker, task_id=track_prices, execution_date=20250614T112443, start_date=20250614T112446, end_date=20250614T112455
+[2025-06-14T11:24:55.438+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2025-06-14T11:24:55.452+0000] {taskinstance.py:2776} INFO - 0 downstream tasks scheduled from follow-on schedule check

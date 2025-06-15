@@ -1,0 +1,16 @@
+[2025-06-14T11:24:46.299+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: price_tracker.backup_data manual__2025-06-14T11:24:43.532518+00:00 [queued]>
+[2025-06-14T11:24:46.311+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: price_tracker.backup_data manual__2025-06-14T11:24:43.532518+00:00 [queued]>
+[2025-06-14T11:24:46.312+0000] {taskinstance.py:1359} INFO - Starting attempt 1 of 3
+[2025-06-14T11:24:46.328+0000] {taskinstance.py:1380} INFO - Executing <Task(BashOperator): backup_data> on 2025-06-14 11:24:43.532518+00:00
+[2025-06-14T11:24:46.338+0000] {standard_task_runner.py:57} INFO - Started process 229 to run task
+[2025-06-14T11:24:46.345+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'price_tracker', 'backup_data', 'manual__2025-06-14T11:24:43.532518+00:00', '--job-id', '5', '--raw', '--subdir', 'DAGS_FOLDER/price_tracker_dag.py', '--cfg-path', '/tmp/tmpc_6ws38y']
+[2025-06-14T11:24:46.349+0000] {standard_task_runner.py:85} INFO - Job 5: Subtask backup_data
+[2025-06-14T11:24:46.480+0000] {task_command.py:415} INFO - Running <TaskInstance: price_tracker.backup_data manual__2025-06-14T11:24:43.532518+00:00 [running]> on host cb09a441b2ae
+[2025-06-14T11:24:46.598+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='price_tracker' AIRFLOW_CTX_TASK_ID='backup_data' AIRFLOW_CTX_EXECUTION_DATE='2025-06-14T11:24:43.532518+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-06-14T11:24:43.532518+00:00'
+[2025-06-14T11:24:46.600+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-06-14T11:24:46.602+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'cp /opt/***/data/prices.csv /opt/***/data/prices_backup_$(date +%Y%m%d).csv']
+[2025-06-14T11:24:46.626+0000] {subprocess.py:86} INFO - Output:
+[2025-06-14T11:24:46.642+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2025-06-14T11:24:46.682+0000] {taskinstance.py:1398} INFO - Marking task as SUCCESS. dag_id=price_tracker, task_id=backup_data, execution_date=20250614T112443, start_date=20250614T112446, end_date=20250614T112446
+[2025-06-14T11:24:46.717+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2025-06-14T11:24:46.734+0000] {taskinstance.py:2776} INFO - 0 downstream tasks scheduled from follow-on schedule check
