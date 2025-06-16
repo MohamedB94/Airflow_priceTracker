@@ -241,48 +241,134 @@ Le DAG s'exécute automatiquement toutes les 6 heures pour maintenir les donnée
 - **Données non affichées** : Assurez-vous que le fichier prices.csv existe et contient des données
 - **Crash du tableau de bord** : Consultez les logs dans la console pour identifier l'erreur
 
-## ☁️ Solutions cloud
+## ☁️ Migration vers AWS Cloud
 
-Dans le cadre de l'optimisation et de la mise à l'échelle de ce projet, j'ai exploré plusieurs options cloud pour déployer le système de suivi des prix et Airflow :
+Dans le cadre d'une évolution vers une architecture cloud robuste et scalable, j'ai conçu une solution AWS complète pour notre système de suivi des prix e-commerce.
 
-### Options explorées
+### Architecture AWS proposée
 
-1. **AWS Managed Workflows for Apache Airflow (MWAA)** :
+![Architecture AWS pour le système de suivi des prix](https://excalidraw.com/#json=LkbFLMaZoX7h0AFSF1LUB,cwIJJF2oK3J3IzULuEaZiQ)
 
-   - Service Airflow entièrement géré qui facilite la configuration et la maintenance
-   - Intégration avec les autres services AWS (S3, RDS, Lambda)
-   - Coûts prévisibles avec facturation à l'utilisation
+### Composants clés de l'architecture AWS
 
-2. **Google Cloud Composer** :
+1. **Amazon MWAA (Managed Workflows for Apache Airflow)**
 
-   - Service Airflow géré par Google Cloud
-   - Intégration avec BigQuery pour l'analyse des données de prix
-   - Évolutivité automatique en fonction de la charge
+   - Service Airflow entièrement géré, éliminant la gestion manuelle de l'infrastructure
+   - DAGs stockés dans un bucket S3 dédié avec versioning
+   - Auto-scaling intégré pour gérer les pics de charge lors des opérations de scraping
 
-3. **Azure Data Factory avec Airflow** :
+2. **AWS Lambda pour le scraping et le traitement**
 
-   - Intégration d'Airflow dans l'écosystème Azure
-   - Possibilités d'analyse avancée avec Azure Synapse
-   - Bonne intégration avec les services Power BI pour les tableaux de bord
+   - Fonctions serverless remplaçant les scripts Python actuels
+   - Fonction de scraping déclenchée par les DAGs MWAA
+   - Fonction de traitement pour nettoyer et transformer les données collectées
+   - Fonction de notification pour les alertes de prix via SNS/SES
 
-4. **Solutions de conteneurs Kubernetes** :
-   - Déploiement d'Airflow sur AKS, EKS ou GKE
-   - Haute disponibilité et résilience
-   - Contrôle précis sur l'infrastructure
+3. **Amazon S3 pour le stockage des données**
 
-### Avantages potentiels
+   - Bucket principal pour les données de prix structurées en CSV/Parquet
+   - Bucket pour les sauvegardes avec politique de rétention configurable
+   - Bucket pour les DAGs d'Airflow et les artefacts de déploiement
 
-- **Évolutivité** : Capacité à suivre un nombre beaucoup plus important de produits
-- **Fiabilité** : Haute disponibilité et reprise après sinistre
-- **Performances** : Ressources adaptées automatiquement à la charge
-- **Sécurité** : Protection des données et conformité améliorées
-- **Tableaux de bord avancés** : Intégration avec des outils d'analyse BI en cloud
+### Flux de données et processus
 
-### Prochaines étapes
+1. **Collecte des données**
 
-La solution actuelle basée sur Docker fonctionne bien pour un usage personnel ou à petite échelle. Pour un déploiement en production ou à plus grande échelle, une migration vers une solution cloud pourrait être envisagée en fonction des besoins futurs et du budget disponible.
+   - Les DAGs MWAA déclenchent les fonctions Lambda de scraping à intervalles réguliers
+   - Les données brutes sont stockées dans S3 dans une zone "raw"
+
+2. **Traitement et transformation**
+
+   - Les fonctions Lambda de traitement sont déclenchées après la collecte
+   - Les données nettoyées sont écrites dans S3 (zone "processed") et dans RDS
+
+3. **Visualisation et alertes**
+
+   - Le service ECS héberge le dashboard qui lit les données depuis RDS
+   - Les alertes de prix sont envoyées via SNS aux utilisateurs abonnés
+
+4. **Sauvegarde et archivage**
+   - Politique de cycle de vie S3 pour archiver les données historiques
+   - Backups automatiques de RDS avec rétention configurable
+
+### Avantages de cette architecture AWS
+
+- **Haute disponibilité** : Tous les services sont conçus avec redondance
+- **Scalabilité** : Capacité à suivre des milliers de produits sans reconfiguration
+- **Coût optimisé** : Paiement à l'usage, pas d'infrastructure idle
+- **Sécurité renforcée** : Chiffrement et contrôle d'accès précis
+- **Opérations simplifiées** : Services managés réduisant la charge opérationnelle
+- **Performance** : Ressources adaptées dynamiquement aux besoins
+
+### Pipeline CI/CD
+
+Le pipeline CI/CD automatise entièrement le processus de déploiement:
+
+1. **Source**: Détection des changements dans le dépôt GitHub
+2. **Build**:
+   - Construction des images Docker pour le scraper et le dashboard
+   - Packaging des fonctions Lambda
+   - Exécution des tests unitaires
+3. **Test**:
+   - Tests d'intégration dans un environnement de staging
+   - Validation des DAGs Airflow
+   - Tests de performance
+4. **Deploy**:
+   - Déploiement des DAGs dans le bucket S3 MWAA
+   - Mise à jour des fonctions Lambda
+   - Déploiement des nouvelles images Docker vers ECS
+   - Exécution des migrations de base de données si nécessaire
+
+### Coûts estimés
+
+Pour un système de suivi surveillant environ 500 produits:
+
+- MWAA: ~$250/mois (environnement de petite taille)
+- Lambda: ~$20/mois (exécutions quotidiennes)
+- S3: ~$5/mois (stockage et requêtes)
+- RDS: ~$50/mois (instance db.t3.small)
+- ECS/Fargate: ~$40/mois (dashboard)
+- Autres services: ~$20/mois
+
+**Total estimé**: ~$385/mois, avec possibilité d'optimisation selon l'usage réel.
+
+Cette architecture AWS représente une évolution naturelle de notre solution Docker actuelle, permettant de conserver les mêmes fonctionnalités tout en ajoutant scalabilité, fiabilité et performances améliorées.
 
 ---
+
+## Architecture Cloud AWS
+
+### Présentation
+
+Voici une architecture cloud basée sur AWS pour le projet de suivi des prix e-commerce. Cette solution utilise des services managés pour garantir scalabilité, fiabilité et simplicité de gestion.
+
+### Schéma d'architecture
+
+![Schéma AWS](schemaAWS.png)
+
+### Composants principaux
+
+1. **AWS CodePipeline** : Automatisation du déploiement des DAGs, des fonctions Lambda, et du tableau de bord.
+2. **AWS MWAA** : Orchestration des workflows Airflow pour gérer les tâches de scraping, traitement, et sauvegarde.
+3. **AWS Lambda** : Exécution des scripts de scraping, transformation des données, et génération des alertes.
+4. **Amazon S3** : Stockage des fichiers CSV contenant les données de prix collectées.
+5. **Amazon RDS** : Base de données relationnelle pour stocker les données historiques des prix.
+6. **AWS ECS/Fargate** : Hébergement du tableau de bord interactif (Dash/Plotly).
+7. **AWS CloudWatch** : Surveillance des performances des workflows, des fonctions Lambda, et des conteneurs ECS.
+
+### Flux de données
+
+1. **Déploiement** :
+   - AWS CodePipeline déploie les DAGs dans MWAA, les fonctions Lambda, et le tableau de bord dans ECS/Fargate.
+2. **Collecte des données** :
+   - MWAA déclenche les fonctions Lambda pour exécuter les tâches de scraping.
+   - Les données collectées sont sauvegardées dans Amazon S3.
+3. **Traitement et stockage** :
+   - Les fonctions Lambda traitent les données et les sauvegardent dans Amazon RDS.
+4. **Visualisation** :
+   - ECS/Fargate héberge le tableau de bord interactif qui récupère les données depuis Amazon RDS.
+5. **Surveillance** :
+   - AWS CloudWatch surveille les performances et configure des alertes en cas d'erreurs.
 
 ## 📜 Licence
 
@@ -290,6 +376,6 @@ Projet interne - Utilisation réservée.
 
 ---
 
-Dernière mise à jour : 15 juin 2025
+Dernière mise à jour : 16 juin 2025
 
 _Ce README regroupe toute la documentation sur Airflow avec Docker, le système de suivi des prix e-commerce et le tableau de bord interactif._
