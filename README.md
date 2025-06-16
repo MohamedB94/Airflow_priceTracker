@@ -344,7 +344,7 @@ Voici une architecture cloud basée sur AWS pour le projet de suivi des prix e-c
 
 ### Schéma d'architecture
 
-![Schéma AWS](schemaAWS.png)
+![Schéma AWS](schemaAWS.excalidraw)
 
 ### Composants principaux
 
