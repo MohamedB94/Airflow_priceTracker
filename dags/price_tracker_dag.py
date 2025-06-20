@@ -98,4 +98,4 @@ end = EmptyOperator(
 )
 
 # Définition du flux de tâches
-start >> track_prices_task >> generate_visualizations_task >> backup_data_task >> end
+start >> track_prices_task >> backup_data_task >> generate_visualizations_task  >> end
